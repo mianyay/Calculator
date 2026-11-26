@@ -10,17 +10,23 @@ function clearDisplay() {
 
 function calculate() {
     try {
-        display.value = String(eval(display.value));
+        const result = String(eval(display.value));
+        display.value = result;
+        latestAnswer = result;
     }
     catch(error) {
         display.value = "Error";
     }
 }
 
-function backspace(input) {
+function backspace() {
     if (display.value === "Error") {
         display.value = "";
     } else {
     display.value = display.value.slice(0, -1)
     }
+}
+
+function answer() {
+    appendToDisplay(latestAnswer);
 }
