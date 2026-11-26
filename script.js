@@ -78,3 +78,16 @@ function decimaltofraction(decimal, maxDenominator = 1000) {
 
     return [sign * current_Numerator, current_denominator]
 }
+
+document.addEventListener("keydown", function(event) {
+    if ( event.key.length == 1 && ".+-*/0123456789".includes(event.key)) {
+        appendToDisplay(event.key);
+    } else if (event.key === "Enter") {
+        event.preventDefault();
+        calculate()
+    } else if (event.key === "Backspace") {
+        backspace();
+    } else if (event.key == "Escape") {
+        clearDisplay()
+    }
+});
