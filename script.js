@@ -84,11 +84,19 @@ function decimaltofraction(decimal, maxDenominator = 1000) {
 }
 
 function evaluate(expression) {
-    expression = expression
-        .replace(/\^/g, "**")
-        .replace(/(\d+\.?\d*)√(\d+\.?\d*)/g, "($2**(1/$1))")
-        .replace(/√(\d+\.?\d*)/g, "Math.sqrt($1)");
+    // 200 + 10% = 220, 200 - 10% = 180, 200 * 10% = 20, 200*5+10% = 1100
 
+    const number = "(\\d+\\.?\\d*)";
+
+    const percent = new RegExp("^(.*?[\\d)])([+-])" + number + "%")
+    while (percent.test(expression)) {
+        expression = expression.replace(percent, "($1)$2(($1)*$3/100)");
+    }
+    expression = expression.replace(new RegExp(number + "%", "g"), "($1/100");
+    expression = expression.replace(/\^/g, "**");
+    expression = expression.replace(new RegExp(number + "√" + number, "g"), "($2**(1/$1))");
+    expression = expression.replace(new RegExp("√" + number, "g"), "($1**(1/2))");
+    
     const result = eval(expression);
     return typeof result === "number" ? parseFloat(result.toPrecision(12)) : result;
 }
