@@ -11,9 +11,13 @@ function clearDisplay() {
 
 function calculate() {
     try {
-        const result = String(evaluate(display.value));
-        display.value = result;
-        latestAnswer = result;
+        const result = evaluate(display.value);
+        if (!isFinite(result)) {
+            display.value = "Error"
+            return;
+        }
+        display.value = String(result);
+        latestAnswer = String(result);
     }
     catch(error) {
         display.value = "Error";
@@ -80,7 +84,13 @@ function decimaltofraction(decimal, maxDenominator = 1000) {
 }
 
 function evaluate(expression) {
-    return eval(expression.replace(/\^/g, "**"));
+    expression = expression
+        .replace(/\^/g, "**")
+        .replace(/(\d+\.?\d*)√(\d+\.?\d*)/g, "($2**(1/$1))")
+        .replace(/√(\d+\.?\d*)/g, "Math.sqrt($1)");
+
+    const result = eval(expression);
+    return typeof result === "number" ? parseFloat(result.toPrecision(12)) : result;
 }
 
 document.addEventListener("keydown", function(event) {
