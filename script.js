@@ -11,7 +11,7 @@ function clearDisplay() {
 
 function calculate() {
     try {
-        const result = String(eval(display.value));
+        const result = String(evaluate(display.value));
         display.value = result;
         latestAnswer = result;
     }
@@ -34,7 +34,7 @@ function answer() {
 
 function fraction() {
     try {
-        const value = Number(eval(display.value));
+        const value = Number(evaluate(display.value));
         
         if (isNaN(value) || Number.isInteger(value)) return;
 
@@ -79,8 +79,12 @@ function decimaltofraction(decimal, maxDenominator = 1000) {
     return [sign * current_Numerator, current_denominator]
 }
 
+function evaluate(expression) {
+    return eval(expression.replace(/\^/g, "**"));
+}
+
 document.addEventListener("keydown", function(event) {
-    if ( event.key.length == 1 && ".+-*/0123456789".includes(event.key)) {
+    if ( event.key.length == 1 && "^.+-*/0123456789".includes(event.key)) {
         appendToDisplay(event.key);
     } else if (event.key === "Enter") {
         event.preventDefault();
@@ -89,5 +93,9 @@ document.addEventListener("keydown", function(event) {
         backspace();
     } else if (event.key == "Escape") {
         clearDisplay()
+    } else if (event.key === "a") {
+        answer();
+    } else if (event.key === "f") {
+        fraction();
     }
 });
