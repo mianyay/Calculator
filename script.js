@@ -1,8 +1,14 @@
 const display = document.getElementById("display")
 const board = document.getElementById("board")
 const pen = board.getContext("2d");
+const color_picker = document.getElementById("pen_colour");
+
 let drawing = false;
 let latestAnswer = "";
+
+function changepencolour() {
+    pen.strokeStyle = color_picker.value
+}
 
 function appendToDisplay(input) {
     display.value += input;
@@ -95,7 +101,7 @@ function evaluate(expression) {
     while (percent.test(expression)) {
         expression = expression.replace(percent, "($1)$2(($1)*$3/100)");
     }
-    expression = expression.replace(new RegExp(number + "%", "g"), "($1/100");
+    expression = expression.replace(new RegExp(number + "%", "g"), "($1/100)");
     expression = expression.replace(/\^/g, "**");
     expression = expression.replace(new RegExp(number + "√" + number, "g"), "($2**(1/$1))");
     expression = expression.replace(new RegExp("√" + number, "g"), "($1**(1/2))");
@@ -127,8 +133,8 @@ function resize_board() {
     board.width = window.innerWidth;
     board.height = window.innerHeight;
     pen.lineWidth = 3;
-    pen.line = "round";
-    pen.stroke_style = "rgb(60, 60, 60)";
+    pen.lineCap = "round";
+    changepencolour()
 }
 resize_board();
 window.addEventListener("resize", resize_board)
@@ -152,3 +158,4 @@ window.addEventListener("pointerup", function() {
 function clear_Board() {
     pen.clearRect(0, 0, board.width, board.height)
 }
+
