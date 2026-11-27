@@ -94,10 +94,10 @@ button:active {
 #pen_colour {
     position: fixed;
     top: 15px;
-    right: 160px;
+    right: 250px;
     z-index: 2;
     width: 50px;
-    height: 40px;
+    height: 30px;
     padding: 0;
     border: 2px solid rgb(163, 157, 157);
     cursor: pointer;
@@ -107,7 +107,8 @@ button:active {
     -webkit-appearance: none;
     position: fixed;
     top: 25px;
-    right: 220px;
+    z-index: 2;
+    right: 320px;
     height: 10px;
     border-radius: 5px;
     background: #d3d3d3;
@@ -133,4 +134,16 @@ button:active {
     border-radius: 50%;
     background: rgb(82, 79, 79);
     cursor: pointer;
+}
+
+#eraser_btn {
+    position: fixed;
+    top: 15px;
+    right: 160px;
+    z-index: 2;
+    width: auto;
+    height: auto;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 1rem;
 }

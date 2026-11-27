@@ -5,6 +5,7 @@ const color_picker = document.getElementById("pen_colour");
 const pen_sizing = document.getElementById("pen_size");
 
 let drawing = false;
+let erasing = false;
 let latestAnswer = "";
 
 function appendToDisplay(input) {
@@ -126,6 +127,16 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
+function applyErase() {
+    pen.globalCompositeOperation = erasing ? "destination-out" : "source-over";
+    document.getElementById("eraser_btn").textContent = erasing ? "Draw" : "Eraser";
+}
+
+function erase() {
+    erasing = !erasing;
+    applyErase()
+}
+
 function changepencolour() {
     pen.strokeStyle = color_picker.value
 }
@@ -140,6 +151,7 @@ function resize_board() {
     pen.lineCap = "round";
     slider()
     changepencolour()
+    applyErase()
 }
 resize_board();
 window.addEventListener("resize", resize_board)
