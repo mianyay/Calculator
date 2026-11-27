@@ -2,13 +2,10 @@ const display = document.getElementById("display")
 const board = document.getElementById("board")
 const pen = board.getContext("2d");
 const color_picker = document.getElementById("pen_colour");
+const pen_sizing = document.getElementById("pen_size");
 
 let drawing = false;
 let latestAnswer = "";
-
-function changepencolour() {
-    pen.strokeStyle = color_picker.value
-}
 
 function appendToDisplay(input) {
     display.value += input;
@@ -111,7 +108,7 @@ function evaluate(expression) {
 }
 
 document.addEventListener("keydown", function(event) {
-    if ( event.key.length == 1 && "^.+-*/0123456789".includes(event.key)) {
+    if (event.key.length == 1 && "^.+-*/0123456789".includes(event.key)) {
         appendToDisplay(event.key);
     } else if (event.key === "Enter") {
         event.preventDefault();
@@ -129,11 +126,19 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
+function changepencolour() {
+    pen.strokeStyle = color_picker.value
+}
+
+function slider() {
+    pen.lineWidth = pen_sizing.value;
+}
+
 function resize_board() {
     board.width = window.innerWidth;
     board.height = window.innerHeight;
-    pen.lineWidth = 3;
     pen.lineCap = "round";
+    slider()
     changepencolour()
 }
 resize_board();
