@@ -1,4 +1,7 @@
 const display = document.getElementById("display")
+const board = document.getElementById("board")
+const pen = board.getContext("2d");
+let drawing = false;
 let latestAnswer = "";
 
 function appendToDisplay(input) {
@@ -84,7 +87,7 @@ function decimaltofraction(decimal, maxDenominator = 1000) {
 }
 
 function evaluate(expression) {
-    // 200 + 10% = 220, 200 - 10% = 180, 200 * 10% = 20, 200*5+10% = 1100
+    // for percentage: 200 + 10% = 220, 200 - 10% = 180, 200 * 10% = 20, 200*5+10% = 1100
 
     const number = "(\\d+\\.?\\d*)";
 
@@ -115,5 +118,37 @@ document.addEventListener("keydown", function(event) {
         answer();
     } else if (event.key === "f") {
         fraction();
+    } else if (event.key === "r") {
+        appendToDisplay("√")
     }
 });
+
+function resize_board() {
+    board.width = window.innerWidth;
+    board.height = window.innerHeight;
+    pen.lineWidth = 3;
+    pen.line = "round";
+    pen.stroke_style = "rgb(60, 60, 60)";
+}
+resize_board();
+window.addEventListener("resize", resize_board)
+
+board.addEventListener("pointerdown", function(event) {
+    drawing = true;
+    pen.beginPath()
+    pen.moveTo(event.clientX, event.clientY);
+});
+
+board.addEventListener("pointermove", function(event) {
+    if (!drawing) return;
+    pen.lineTo(event.clientX, event.clientY);
+    pen.stroke();
+});
+
+window.addEventListener("pointerup", function() {
+    drawing = false;
+});
+
+function clear_Board() {
+    pen.clearRect(0, 0, board.width, board.height)
+}
