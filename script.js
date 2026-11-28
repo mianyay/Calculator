@@ -127,11 +127,57 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
+const backgrounds = [
+    "backgrounds/dot.png",
+    "backgrounds/grid.png",
+    "backgrounds/line.png",
+    "backgrounds/white.png",
+    "backgrounds/wrinkle.png"
+];
+
+let background_index = 0;
+
+function updatebackground() {
+    document.body.style.backgroundImage = `url("${backgrounds[background_index]}")`;
+}
+
+function switchbackground() {
+    background_index = (background_index + 1) % backgrounds.length;
+    updatebackground()
+}
+updatebackground()
+
+
 function saveimage() {
-    const saveImage = document.createElement("a")
-    saveImage.href = board.toDataURL("image/png");
-    saveImage.download = "working-out.png";
-    saveImage.click()
+    const bg = document.createElement("canvas");
+    bg.width = board.width
+    bg.height = board.height
+    const bgdraw = bg.getContext("2d");
+
+    // white bg start
+    bgdraw.fillStyle = "white"
+    bgdraw.fillRect(0, 0, bg.width, bg.height);
+
+    const backgroundImg = new Image();
+    backgroundImg.onload = function () {
+        const scale = Math.max(bg.width / backgroundImg.width, bg.height / backgroundImg.height);
+        const drawidth = backgroundImg.width * scale;
+        const drawheight = backgroundImg.height * scale;
+        const offsetx = (bg.width - drawidth) / 2;
+        const offsety = (bg.height - drawheight) / 2;
+
+        bgdraw.drawImage(backgroundImg, offsetx, offsety, drawidth, drawheight);
+        bgdraw.drawImage(board, 0, 0);
+
+        const saveImage = document.createElement("a");
+        saveImage.href = bg.toDataURL("image/png");
+        saveImage.download = "working-out.png";
+        document.body.appendChild(saveImage);
+        saveImage.click();
+        document.body.removeChild(saveImage);
+    };
+
+    backgroundImg.src = backgrounds[background_index];
 }
 
 function applyErase() {
@@ -182,4 +228,3 @@ window.addEventListener("pointerup", function() {
 function clear_Board() {
     pen.clearRect(0, 0, board.width, board.height)
 }
-
