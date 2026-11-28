@@ -127,6 +127,13 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
+function saveimage() {
+    const saveImage = document.createElement("a")
+    saveImage.href = board.toDataURL("image/png");
+    saveImage.download = "working-out.png";
+    saveImage.click()
+}
+
 function applyErase() {
     pen.globalCompositeOperation = erasing ? "destination-out" : "source-over";
     document.getElementById("eraser_btn").textContent = erasing ? "Draw" : "Eraser";
@@ -135,7 +142,7 @@ function applyErase() {
 function erase() {
     erasing = !erasing;
     applyErase()
-}
+} 
 
 function changepencolour() {
     pen.strokeStyle = color_picker.value

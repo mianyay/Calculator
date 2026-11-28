@@ -147,3 +147,15 @@ button:active {
     border-radius: 10px;
     font-size: 1rem;
 }
+
+#save_img {
+    position: fixed;
+    top: 15px;
+    right: 470px;
+    z-index: 2;
+    width: auto;
+    height: auto;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
